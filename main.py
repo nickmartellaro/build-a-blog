@@ -1,7 +1,7 @@
 import os
 import webapp2
 import jinja2
-
+import logging
 from google.appengine.ext import db
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -26,6 +26,7 @@ class Handler(webapp2.RequestHandler):
 
 
     def render(self, template, **kw):
+        logging.error('looking for a template called ' + template[:100] + 'end of first 100')
         self.write(self.render_str(template, **kw))
 
 
@@ -41,7 +42,7 @@ class BlogPage(Handler):
         text = "test"
         t = jinja_env.get_template("blog.html")
         content = t.render(text = text)
-        self.render(content)
+        self.response.write(content)
 
 class NewPost(Handler):
     def get(self):
